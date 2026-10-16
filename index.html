@@ -475,113 +475,10 @@ function makeIcon(className) {
 /* ---------------- ICON MAPS ---------------- */
 const TECH_MAP = {
   html5:      ['fa-brands fa-html5',        '#e34f26'],
-  css3:       ['fa-brands rk" viewBox="0 0 56 48" fill="none" stroke="#e0b658" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 40C8 14 24 4 42 6"/><path d="M16 42L31 14l16 28"/></svg>
-    <img id="logo" alt="" hidden>
-    <span id="brand"></span>
-  </a>
-  <div class="links" id="links">
-    <a href="index.html" class="on">Home</a>
-    <a href="about.html">About</a>
-    <a href="portfolio.html">Projects</a>
-    <a href="services.html">Services</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="blog.html">Blog</a>
-    <a href="contact.html">Contact</a>
-  </div>
-  <a class="btn gold sm" href="contact.html"><i class="fa-solid fa-paper-plane"></i> Hire Me</a>
-  <button class="icon-btn" id="theme" aria-label="Toggle theme"><i class="fa-solid fa-sun"></i></button>
-  <button class="icon-btn" id="burger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
-</div></nav>
-
-<header id="home"><div class="wrap"><div class="frame">
-  <img class="photo" id="heroImg" alt="Portrait" hidden>
-  <div class="copy">
-    <p class="hi" id="greeting"></p>
-    <h1 id="name"></h1>
-    <p class="role" id="role"></p>
-    <p class="tag" id="tagline"></p>
-    <div class="cta">
-      <a class="btn gold" href="portfolio.html">View Our Projects <i class="fa-solid fa-arrow-right"></i></a>
-      <a class="btn" href="contact.html">Contact Us <i class="fa-regular fa-envelope"></i></a>
-    </div>
-    <div class="techs-wrap"><div class="techs" id="techs"></div></div>
-  </div>
-  <aside class="stats" id="stats"></aside>
-</div></div></header>
-
-<section id="services"><div class="wrap">
-  <div class="head c"><h2>Our <b>Services</b></h2><p class="sub">Quality solutions for your needs</p></div>
-  <div class="svc" id="serviceList"></div>
-</div></section>
-
-<section id="projects"><div class="wrap">
-  <div class="head c"><h2>Our <b>Projects</b></h2><p class="sub">Some of our recent work</p></div>
-  <div class="grid" id="projectList"><p class="sub" style="grid-column:1/-1;text-align:center;">Loading projects…</p></div>
-  <div style="text-align:center;margin-top:40px;"><a class="btn gold" href="portfolio.html">View All Projects <i class="fa-solid fa-arrow-right"></i></a></div>
-</div></section>
-
-<section id="about"><div class="wrap"><div class="panel about">
-  <div class="t">
-    <h2 id="aboutTitle"></h2>
-    <p class="sub" id="aboutSub" style="margin-bottom:18px"></p>
-    <p id="aboutText" style="font-size:.95rem;line-height:1.75;color:var(--mute)"></p>
-    <ul id="aboutPoints"></ul>
-    <a class="btn gold" id="cv" href="#" target="_blank" rel="noopener" hidden><i class="fa-solid fa-download"></i> Download CV</a>
-  </div>
-  <div class="pic"><img id="aboutImg" alt="About me" hidden></div>
-</div></div></section>
-
-<section id="blog" hidden><div class="wrap">
-  <div class="head c"><h2>Latest <b>Blog</b> Posts</h2><p class="sub">Tutorials, updates and resources</p></div>
-  <div class="grid" id="blogList"></div>
-  <div style="text-align:center;margin-top:40px;"><a class="btn gold" href="blog.html">Read More Articles <i class="fa-solid fa-arrow-right"></i></a></div>
-</div></section>
-
-<section id="contact"><div class="wrap">
-  <div class="head c"><h2>Get In <b>Touch</b></h2><p class="sub">Let's work together!</p></div>
-  <div class="contact">
-    <div class="info">
-      <a href="#" class="btn contact-btn" id="phoneBtn"><i class="fa-solid fa-phone-volume"></i> <span id="phoneText"></span></a>
-      <a href="#" class="btn contact-btn" id="emailBtn"><i class="fa-solid fa-envelope-open-text"></i> <span id="emailText"></span></a>
-      <p><i class="fa-solid fa-location-dot"></i><span id="location"></span></p>
-      <div class="soc" id="socials"></div>
-    </div>
-    <form id="form" novalidate>
-      <div><input id="fn" placeholder="Your name" maxlength="100" autocomplete="name" aria-label="Your name"><div class="err" id="e1"></div></div>
-      <div><input id="fe" type="email" placeholder="Your email" maxlength="150" autocomplete="email" aria-label="Your email"><div class="err" id="e2"></div></div>
-      <div><textarea id="fm" rows="5" placeholder="Your message" maxlength="2000" aria-label="Your message"></textarea><div class="err" id="e3"></div></div>
-      <button class="btn gold" type="submit" id="send" style="justify-content:center;padding:15px;"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
-      <p id="ok" role="status"></p>
-    </form>
-  </div>
-</div></section>
-
-<footer>© <span id="yr"></span> <span id="foot"></span>. All rights reserved.</footer>
-<a class="wa" id="wa" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden><i class="fa-brands fa-whatsapp"></i></a>
-
-<script type="module">
-import { db, DEFAULTS } from "./firebase.js";
-import { doc, getDoc, collection, getDocs, query, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-
-/* ---------------- HELPERS ---------------- */
-const $ = id => document.getElementById(id);
-const mk = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; };
-const safeUrl = u => /^(https?:|mailto:|tel:|data:image\/)/i.test(u || "") ? u : "";
-
-// The ONLY correct way: create a real <i> element and set className
-function makeIcon(className) {
-  const i = document.createElement('i');
-  i.className = className;
-  return i;
-}
-
-/* ---------------- ICON MAPS ---------------- */
-const TECH_MAP = {
-  html5:      ['fa-brands fa-html5',        '#e34f26'],
   css3:       ['fa-brands fa-css3-alt',     '#1572b6'],
   javascript: ['fa-brands fa-js',           '#f7df1e'],
   react:      ['fa-brands fa-react',        '#61dafb'],
-  nextjs:     ['fa-brands fa-react',        '#ffffff'], // Next.js uses React icon
+  nextjs:     ['fa-brands fa-react',        '#ffffff'],
   nodejs:     ['fa-brands fa-node-js',      '#68a063'],
   python:     ['fa-brands fa-python',       '#3776ab'],
   php:        ['fa-brands fa-php',          '#777bb4'],
@@ -651,6 +548,50 @@ $("name").append(bTag);
 if (cfg.signatureImg) { $("sig").src = safeUrl(cfg.signatureImg); $("sig").hidden = false; }
 if (cfg.logoImg) { $("logo").src = safeUrl(cfg.logoImg); $("logo").hidden = false; $("mark").remove(); }
 
+/* ---------------- DYNAMIC LOADING SCREEN (5 SECONDS) ---------------- */
+const loader = $("loader");
+const loaderFill = $("loaderFill");
+const circleFill = $("circleFill");
+const percentageText = $("percentageText");
+const loaderLogo = $("loaderLogo");
+
+// Set dynamic logo if provided by admin
+if (cfg.logoImg) {
+  loaderLogo.src = safeUrl(cfg.logoImg);
+  loaderLogo.style.display = "block";
+}
+
+let progress = 0;
+const totalTime = 5000; // 5 seconds
+const intervalTime = 1000; // 1 second
+const increment = 20; // 20% per second (5 intervals of 20% = 100% in 5s)
+const circumference = 408; // 2 * PI * 65
+
+const timer = setInterval(() => {
+  progress += increment;
+  if (progress > 100) progress = 100;
+  
+  // Update linear bar
+  loaderFill.style.width = progress + "%";
+  
+  // Update circle
+  const offset = circumference - (progress / 100) * circumference;
+  circleFill.style.strokeDashoffset = offset;
+  
+  // Update percentage text
+  percentageText.textContent = progress + "%";
+
+  if (progress >= 100) {
+    clearInterval(timer);
+    
+    // Smooth fade out
+    setTimeout(() => {
+      loader.classList.add("hide");
+      document.body.classList.add("ready");
+    }, 500); // Slight delay after 100% for visual satisfaction
+  }
+}, intervalTime);
+
 /* ---------------- TECH MARQUEE ---------------- */
 const techContainer = $("techs");
 const buildTechItems = () => {
@@ -672,7 +613,6 @@ const buildTechItems = () => {
   });
   return frag;
 };
-// Append twice for seamless loop
 techContainer.append(buildTechItems(), buildTechItems());
 
 /* ---------------- STATS ---------------- */
@@ -751,7 +691,7 @@ if (safeUrl((cfg.socials || {}).whatsapp)) {
   $("wa").hidden = false;
 }
 
-/* ---------------- CARD BUILDER (Projects + Blog) ---------------- */
+/* ---------------- CARD BUILDER ---------------- */
 function buildCard(item, linkLabel) {
   const card = document.createElement("article");
   card.className = "card";
