@@ -30,10 +30,174 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{background:var(--bg);color:var(--text);font:400 15px/1.6 "Poppins","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font:400 15px/1.6 "Poppins","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;}
+body.ready{overflow:auto;}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .wrap{max-width:1160px;margin:auto;padding:0 24px}
+
+/* ---------- LOADING SCREEN ---------- */
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+  padding: 20px;
+}
+#loader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Admin Logo */
+.loader-logo {
+  max-height: 100px;
+  width: auto;
+  margin-bottom: 30px;
+  display: block;
+}
+
+/* Circular Progress */
+.circle-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin-bottom: 24px;
+}
+.circle-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.circle-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 8;
+}
+.circle-fill {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 408; /* Circumference of r=65 (2 * PI * 65) */
+  stroke-dashoffset: 408;
+  transition: stroke-dashoffset 0.3s ease;
+}
+.percentage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 1px;
+}
+
+/* Text below circle */
+.loader-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.loader-sub {
+  font-size: 0.9rem;
+  color: var(--mute);
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Linear Bar */
+.loader-bar {
+  width: 280px;
+  height: 6px;
+  background: var(--panel-2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.loader-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold), #3b82f6);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+/* Features Row */
+.loader-features {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.feat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+.feat-item i {
+  font-size: 1.6rem;
+  color: var(--gold);
+  width: 30px;
+  text-align: center;
+}
+.feat-item div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.feat-item span:first-child {
+  font-weight: 600;
+}
+.feat-item span:last-child {
+  color: var(--mute);
+  font-size: 0.75rem;
+}
+
+/* Bottom Quote */
+.loader-quote {
+  font-size: 0.95rem;
+  color: var(--gold);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+.loader-quote::before,
+.loader-quote::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.6;
+}
+.loader-quote::before { left: -50px; }
+.loader-quote::after { right: -50px; }
+
+/* Hide bottom features on very small screens */
+@media (max-width: 600px) {
+  .loader-features { gap: 20px; }
+  .feat-item { font-size: 0.75rem; }
+  .feat-item i { font-size: 1.2rem; }
+  .loader-bar { width: 200px; }
+  .loader-quote::before, .loader-quote::after { display: none; }
+  .circle-wrap { width: 110px; height: 110px; }
+  .percentage { font-size: 1.4rem; }
+}
 
 /* ---------- NAV ---------- */
 nav{position:sticky;top:0;z-index:50;background:rgba(10,14,26,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
@@ -157,9 +321,161 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 </style>
 </head>
 <body>
+
+<!-- LOADING SCREEN -->
+<div id="loader">
+  <!-- Admin Logo -->
+  <img id="loaderLogo" class="loader-logo" src="" alt="Loading Logo" style="display:none;">
+  
+  <!-- Circular Progress -->
+  <div class="circle-wrap">
+    <svg class="circle-svg" viewBox="0 0 140 140">
+      <circle class="circle-bg" cx="70" cy="70" r="65"></circle>
+      <circle class="circle-fill" id="circleFill" cx="70" cy="70" r="65"></circle>
+    </svg>
+    <div class="percentage" id="percentageText">0%</div>
+  </div>
+
+  <!-- Text Below Circle -->
+  <div class="loader-title">Loading...</div>
+  <div class="loader-sub">Almost there! Preparing your experience.</div>
+
+  <!-- Linear Progress Bar -->
+  <div class="loader-bar">
+    <div class="loader-fill" id="loaderFill"></div>
+  </div>
+
+  <!-- Features Row -->
+  <div class="loader-features">
+    <div class="feat-item">
+      <i class="fa-solid fa-shield-halved"></i>
+      <div><span>Reliable</span><span>Services</span></div>
+    </div>
+    <div class="feat-item">
+      <i class="fa-solid fa-bolt"></i>
+      <div><span>Fast</span><span>Processing</span></div>
+    </div>
+    <div class="feat-item">
+      <i class="fa-solid fa-lock"></i>
+      <div><span>Secure</span><span>& Private</span></div>
+    </div>
+    <div class="feat-item">
+      <i class="fa-solid fa-headset"></i>
+      <div><span>24/7</span><span>Support</span></div>
+    </div>
+  </div>
+
+  <!-- Bottom Quote -->
+  <div class="loader-quote">Your Success, Our Priority</div>
+</div>
+
 <nav><div class="wrap">
   <a href="index.html" class="brand" aria-label="Home">
     <svg id="mark" viewBox="0 0 56 48" fill="none" stroke="#e0b658" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 40C8 14 24 4 42 6"/><path d="M16 42L31 14l16 28"/></svg>
+    <img id="logo" alt="" hidden>
+    <span id="brand"></span>
+  </a>
+  <div class="links" id="links">
+    <a href="index.html" class="on">Home</a>
+    <a href="about.html">About</a>
+    <a href="portfolio.html">Projects</a>
+    <a href="services.html">Services</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+  </div>
+  <a class="btn gold sm" href="contact.html"><i class="fa-solid fa-paper-plane"></i> Hire Me</a>
+  <button class="icon-btn" id="theme" aria-label="Toggle theme"><i class="fa-solid fa-sun"></i></button>
+  <button class="icon-btn" id="burger" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+</div></nav>
+
+<header id="home"><div class="wrap"><div class="frame">
+  <img class="photo" id="heroImg" alt="Portrait" hidden>
+  <div class="copy">
+    <p class="hi" id="greeting"></p>
+    <h1 id="name"></h1>
+    <p class="role" id="role"></p>
+    <p class="tag" id="tagline"></p>
+    <div class="cta">
+      <a class="btn gold" href="portfolio.html">View Our Projects <i class="fa-solid fa-arrow-right"></i></a>
+      <a class="btn" href="contact.html">Contact Us <i class="fa-regular fa-envelope"></i></a>
+    </div>
+    <div class="techs-wrap"><div class="techs" id="techs"></div></div>
+  </div>
+  <aside class="stats" id="stats"></aside>
+</div></div></header>
+
+<section id="services"><div class="wrap">
+  <div class="head c"><h2>Our <b>Services</b></h2><p class="sub">Quality solutions for your needs</p></div>
+  <div class="svc" id="serviceList"></div>
+</div></section>
+
+<section id="projects"><div class="wrap">
+  <div class="head c"><h2>Our <b>Projects</b></h2><p class="sub">Some of our recent work</p></div>
+  <div class="grid" id="projectList"><p class="sub" style="grid-column:1/-1;text-align:center;">Loading projects…</p></div>
+  <div style="text-align:center;margin-top:40px;"><a class="btn gold" href="portfolio.html">View All Projects <i class="fa-solid fa-arrow-right"></i></a></div>
+</div></section>
+
+<section id="about"><div class="wrap"><div class="panel about">
+  <div class="t">
+    <h2 id="aboutTitle"></h2>
+    <p class="sub" id="aboutSub" style="margin-bottom:18px"></p>
+    <p id="aboutText" style="font-size:.95rem;line-height:1.75;color:var(--mute)"></p>
+    <ul id="aboutPoints"></ul>
+    <a class="btn gold" id="cv" href="#" target="_blank" rel="noopener" hidden><i class="fa-solid fa-download"></i> Download CV</a>
+  </div>
+  <div class="pic">
+    <img id="aboutImg" alt="About me" hidden>
+    <img id="sig" class="sig" alt="Signature" hidden>
+  </div>
+</div></div></section>
+
+<section id="blog" hidden><div class="wrap">
+  <div class="head c"><h2>Latest <b>Blog</b> Posts</h2><p class="sub">Tutorials, updates and resources</p></div>
+  <div class="grid" id="blogList"></div>
+  <div style="text-align:center;margin-top:40px;"><a class="btn gold" href="blog.html">Read More Articles <i class="fa-solid fa-arrow-right"></i></a></div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <div class="head c"><h2>Get In <b>Touch</b></h2><p class="sub">Let's work together!</p></div>
+  <div class="contact">
+    <div class="info">
+      <a href="#" class="btn contact-btn" id="phoneBtn"><i class="fa-solid fa-phone-volume"></i> <span id="phoneText"></span></a>
+      <a href="#" class="btn contact-btn" id="emailBtn"><i class="fa-solid fa-envelope-open-text"></i> <span id="emailText"></span></a>
+      <p><i class="fa-solid fa-location-dot"></i><span id="location"></span></p>
+      <div class="soc" id="socials"></div>
+    </div>
+    <form id="form" novalidate>
+      <div><input id="fn" placeholder="Your name" maxlength="100" autocomplete="name" aria-label="Your name"><div class="err" id="e1"></div></div>
+      <div><input id="fe" type="email" placeholder="Your email" maxlength="150" autocomplete="email" aria-label="Your email"><div class="err" id="e2"></div></div>
+      <div><textarea id="fm" rows="5" placeholder="Your message" maxlength="2000" aria-label="Your message"></textarea><div class="err" id="e3"></div></div>
+      <button class="btn gold" type="submit" id="send" style="justify-content:center;padding:15px;"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+      <p id="ok" role="status"></p>
+    </form>
+  </div>
+</div></section>
+
+<footer>© <span id="yr"></span> <span id="foot"></span>. All rights reserved.</footer>
+<a class="wa" id="wa" href="#" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" hidden><i class="fa-brands fa-whatsapp"></i></a>
+
+<script type="module">
+import { db, DEFAULTS } from "./firebase.js";
+import { doc, getDoc, collection, getDocs, query, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* ---------------- HELPERS ---------------- */
+const $ = id => document.getElementById(id);
+const safeUrl = u => /^(https?:|mailto:|tel:|data:image\/)/i.test(u || "") ? u : "";
+
+function makeIcon(className) {
+  const i = document.createElement('i');
+  i.className = className;
+  return i;
+}
+
+/* ---------------- ICON MAPS ---------------- */
+const TECH_MAP = {
+  html5:      ['fa-brands fa-html5',        '#e34f26'],
+  css3:       ['fa-brands rk" viewBox="0 0 56 48" fill="none" stroke="#e0b658" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 40C8 14 24 4 42 6"/><path d="M16 42L31 14l16 28"/></svg>
     <img id="logo" alt="" hidden>
     <span id="brand"></span>
   </a>
