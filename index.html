@@ -279,7 +279,6 @@ h2 b{color:var(--gold)}
 .about li i{color:var(--gold);width:20px;text-align:center;font-size:.85rem;flex:none}
 .about .pic{position:relative;align-self:end;height:100%;display:flex;align-items:flex-end;justify-content:center;min-height:340px}
 .about .pic>img:first-child{max-height:440px;width:auto;object-fit:contain}
-.sig{position:absolute;right:20px;bottom:16px;width:160px;opacity:.85}
 
 /* ---------- CONTACT ---------- */
 .contact{display:grid;grid-template-columns:1fr 1fr;gap:40px}
@@ -366,7 +365,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
   </div>
 
   <!-- Bottom Quote -->
-  <div class="loader-quote">Your Success, Our Priority</div>
+  <div class="loader-quote">Your Success, My Priority</div>
 </div>
 
 <nav><div class="wrap">
@@ -397,8 +396,8 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
     <p class="role" id="role"></p>
     <p class="tag" id="tagline"></p>
     <div class="cta">
-      <a class="btn gold" href="portfolio.html">View Our Projects <i class="fa-solid fa-arrow-right"></i></a>
-      <a class="btn" href="contact.html">Contact Us <i class="fa-regular fa-envelope"></i></a>
+      <a class="btn gold" href="portfolio.html">View My Projects <i class="fa-solid fa-arrow-right"></i></a>
+      <a class="btn" href="contact.html">Contact Me <i class="fa-regular fa-envelope"></i></a>
     </div>
     <div class="techs-wrap"><div class="techs" id="techs"></div></div>
   </div>
@@ -411,7 +410,7 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
 </div></section>
 
 <section id="projects"><div class="wrap">
-  <div class="head c"><h2>Our <b>Projects</b></h2><p class="sub">Some of our recent work</p></div>
+  <div class="head c"><h2>My <b>Projects</b></h2><p class="sub">Some of My recent work</p></div>
   <div class="grid" id="projectList"><p class="sub" style="grid-column:1/-1;text-align:center;">Loading projects…</p></div>
   <div style="text-align:center;margin-top:40px;"><a class="btn gold" href="portfolio.html">View All Projects <i class="fa-solid fa-arrow-right"></i></a></div>
 </div></section>
@@ -426,7 +425,6 @@ footer{border-top:1px solid var(--line);padding:30px 0;text-align:center;color:v
   </div>
   <div class="pic">
     <img id="aboutImg" alt="About me" hidden>
-    <img id="sig" class="sig" alt="Signature" hidden>
   </div>
 </div></div></section>
 
@@ -545,7 +543,6 @@ $("name").append(bTag);
 ['heroImg','aboutImg'].forEach(k => {
   if (cfg[k]) { $(k).src = safeUrl(cfg[k]); $(k).hidden = false; }
 });
-if (cfg.signatureImg) { $("sig").src = safeUrl(cfg.signatureImg); $("sig").hidden = false; }
 if (cfg.logoImg) { $("logo").src = safeUrl(cfg.logoImg); $("logo").hidden = false; $("mark").remove(); }
 
 /* ---------------- DYNAMIC LOADING SCREEN (5 SECONDS) ---------------- */
